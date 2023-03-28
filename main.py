@@ -2,7 +2,9 @@ from controllers.controller import Controller
    
 controller = Controller()
 
-controller.create_tournament("Final affrontement")
-controller.create_player()
+controller.launch()
 
-controller.display_tournament_list()
+# controller.create_tournament()
+# controller.create_player()
+
+# controller.display_tournament_list()
