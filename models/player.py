@@ -3,11 +3,19 @@ Classe joueur: nom, prénom, date de naissance, idne
 """
 class Player:
 
-    def __init__(self, firstName, lastName, birthDate, idne):
-        self.firstName = firstName
-        self.lastName = lastName
-        self.birthDate = birthDate
-        self.idne = idne
+    def __init__(self, atts):
+        self.firstName = atts['firstName']
+        self.lastName = atts['lastName']
+        self.birthDate = atts['birthDate']
+        self.idne = atts['idne']
+
+    def json_serialize(self):
+        self.atts = {
+            'firstName' : self.firstName,
+            'lastName' : self.lastName,
+            'birthDate' : self.birthDate,
+            'idne' : self.idne,
+        }
 
     def __str__(self):
         result = f"Nom du joueur : {self.lastName}\n"

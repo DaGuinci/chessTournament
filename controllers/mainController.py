@@ -7,11 +7,13 @@
 # from views.modifyTournamentView import ModifyTournamentView
 from .menuController import MenuController
 from .tournamentController import TournamentController
+from .playerController import PlayerController
 
 class MainController:
     def __init__(self):
         self.justArrived = True
         self.tournament_controller = TournamentController()
+        self.player_controller = PlayerController()
 
     """Accueil de l'utilisateur, demander quoi faire"""
     def run(self):
@@ -23,7 +25,6 @@ class MainController:
         # else:
         #     print('\nQue souhaitez-vous faire ?\n')
         # menu = HomeMenu()
-        # choice = menu.display_menu()
         match choice:
             case 1:
                 """Créer / jouer un tournoi"""
@@ -31,10 +32,12 @@ class MainController:
                 self.run()
             case 2:
                 """Enregistrer un nouveau joueur"""
-                self.modify_tournament_section()
+                self.player_controller.create_player()
+                self.run()
             case 3:
                 """Afficher la liste des joueurs"""
-                self.create_player()
+                self.player_controller.display_players()
+                self.run
             case _:
                 print('Nous n\'avons pas compris votre choix. Veuillez réessayer.')
 
