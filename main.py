@@ -1,10 +1,5 @@
-from controllers.controller import Controller
+from controllers.mainController import MainController
    
-controller = Controller()
+controller = MainController()
 
-controller.launch()
-
-# controller.create_tournament()
-# controller.create_player()
-
-# controller.display_tournament_list()
+controller.run()

@@ -8,5 +8,5 @@ class TournamentSelectMenu:
         for i, entry in enumerate(self.entries):
             print(i+1, entry.name)
         msg = 'Quel tournoi souhaitez-vous modifier ?'
-        msg += '(entrez \'r\' pour revenir au menu principal)\n'
+        msg += '\n(entrez \'r\' pour revenir au menu principal)\n'
         return input(msg)

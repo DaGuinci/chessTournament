@@ -12,5 +12,5 @@ class HomeMenu:
         for entry in self.entries:
             print(entry)
 
-        response = input('Quel est votre choix ?\n')
+        response = input('\nQuel est votre choix ?\n')
         return response
