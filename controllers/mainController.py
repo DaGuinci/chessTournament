@@ -33,11 +33,12 @@ class MainController:
             case 2:
                 """Enregistrer un nouveau joueur"""
                 self.player_controller.create_player()
+                """TODO si le joueur existe, refuser la création"""
                 self.run()
             case 3:
                 """Afficher la liste des joueurs"""
                 self.player_controller.display_players()
-                self.run
+                self.run()
             case _:
                 print('Nous n\'avons pas compris votre choix. Veuillez réessayer.')
 

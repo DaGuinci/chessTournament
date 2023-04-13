@@ -3,7 +3,7 @@ from views.menuView import MenuView
 
 class MenuController:
 
-    def __init__(self, menu_name, atts = []):
+    def __init__(self, menu_name, atts = {}):
         self.menu = Menu(menu_name, atts)
         self.menuView = MenuView(self.menu)
         self.response = ''

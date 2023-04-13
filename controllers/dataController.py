@@ -13,7 +13,7 @@ class DataController:
         file_is_not_empty = self.is_non_zero_file("out/tournaments.json")
         if file_is_not_empty:
             with open(f"out/tournaments.json", "r") as f:
-                tournaments = json.load(f)  
+                tournaments = json.load(f)
             return tournaments
         else:
             return []
@@ -23,10 +23,14 @@ class DataController:
 
         if len(tournaments) > 0:
             for tournament in tournaments:
+                # for player in tournament.players:
+                #     player.json_serialize()
                 tournament.json_serialize()
+                # print(tournament.players)
                 datas.append(tournament.atts)
 
             with open(f"out/tournaments.json", "w") as f:
+                """TODO vérifier si besoin d'un json.dump"""
                 json.dump(datas, f)
 
     def load_players(self):

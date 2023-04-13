@@ -10,28 +10,41 @@ class Tournament:
             endDate,
             numberOfRounds = 4,
             currentRound,
-            roundsList,
-            playersList,
-            notes
+            rounds,
+            players,
+            notes,
+            rounds
     """
     def __init__(self, atts):
-        
         self.name = atts['name']
         self.location = atts['location']
         self.startDate = atts['startDate']
         self.endDate = atts['endDate']
         self.numberOfRounds = atts['numberOfRounds']
         self.currentRound = atts['currentRound']
-        self.roundsList = atts['roundsList']
-        self.playersList = atts['playersList']
+        self.rounds = atts['rounds']
+        if 'players' in atts:
+            self.players = atts['players']
+        else:
+            self.players = []
+        if 'players_ids' in atts:
+            self.players_ids = atts['players_ids']
+        else:
+            self.players_ids = []
+        self.players_ids = atts['players_ids'] if atts['players_ids'] else []
         self.notes = atts['notes']
-
+        self.rounds = []
 
     """Ajout de joueurs à la liste des inscrits"""
     def add_player(self, player):
-        self.playersList.append(player)
+        self.players.append(player)
 
     def json_serialize(self):
+        players = []
+        if len(self.players) > 0:
+            for player in self.players:
+                players.append(player.idne)
+
         self.atts = {
             'name' : self.name,
             'location' : self.location,
@@ -39,9 +52,10 @@ class Tournament:
             'endDate' : self.endDate,
             'numberOfRounds' : self.numberOfRounds,
             'currentRound' : self.currentRound,
-            'roundsList' : self.roundsList,
-            'playersList' : self.playersList,
-            'notes' : self.notes
+            'rounds' : self.rounds,
+            'players_ids' : players,
+            'notes' : self.notes,
+            'rounds' : self.rounds
         }
     
     def json_unserialize(self, json_datas):
@@ -51,9 +65,10 @@ class Tournament:
         self.endDate = json_datas['endDate'],
         self.numberOfRounds = json_datas['numberOfRounds'],
         self.currentRound = json_datas['currentRound'],
-        self.roundsList = json_datas['roundsList'],
-        self.playersList = json_datas['playersList'],
-        self.notes = json_datas['notes']
+        self.rounds = json_datas['rounds'],
+        self.players_ids = json_datas['players_id'],
+        self.notes = json_datas['notes'],
+        self.rounds = json_datas['rounds']
 
     def __str__(self):
         return self.name

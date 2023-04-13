@@ -18,6 +18,5 @@ class PlayerView:
         print('=============================')
         print('Liste des joueurs enregistrés')
         print('=============================')
-        print('\n')
         for player in players:
             print(player)

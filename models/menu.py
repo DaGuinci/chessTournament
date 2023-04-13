@@ -7,7 +7,7 @@ class Menu:
     entries : list
     """
 
-    def __init__(self, menu_name = 'default', atts = []):
+    def __init__(self, menu_name = 'default', atts = {}):
         match menu_name:
             case 'default':
                 self.title = 'Menu title'
@@ -35,9 +35,29 @@ class Menu:
             case 'select_tournament':
                 self.title = 'Liste des tournois'
                 self.intro = 'Veuillez sélectionner un tournoi'
-                self.entries = atts
+                self.entries = atts['tournaments']
                 if self.entries[- 1] != 'Revenir au menu principal':
                     self.entries.append('Revenir au menu principal')
+            
+            case 'modify_tournament':
+                tournament = str(atts['tournament'])
+                self.title = 'Menu modifier le tournoi ' + tournament
+                self.intro = 'Que souhaitez vous faire ?'
+                self.entries = [
+                    'Inscrire un joueur',
+                    'Jouer le tournoi',
+                    'Revenir au menu principal'
+                ]
+            
+            case 'subscribe_player':
+                tournament = str(atts['tournament'])
+                self.title = 'Inscrire un joueur au tournoi ' + tournament
+                self.intro = 'Que souhaitez vous faire ?'
+                self.entries = [
+                    'Inscrire un joueur existant',
+                    'Créer un nouveau joueur',
+                    'Revenir au menu principal'
+                ]
             
             case other:
                 self.title = 'Menu title'
