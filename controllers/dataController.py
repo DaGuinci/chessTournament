@@ -23,10 +23,7 @@ class DataController:
 
         if len(tournaments) > 0:
             for tournament in tournaments:
-                # for player in tournament.players:
-                #     player.json_serialize()
                 tournament.json_serialize()
-                # print(tournament.players)
                 datas.append(tournament.atts)
 
             with open(f"out/tournaments.json", "w") as f:

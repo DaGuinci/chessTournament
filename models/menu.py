@@ -46,6 +46,7 @@ class Menu:
                 self.entries = [
                     'Inscrire un joueur',
                     'Jouer le tournoi',
+                    'Afficher les détails du tournoi',
                     'Revenir au menu principal'
                 ]
             
@@ -59,6 +60,16 @@ class Menu:
                     'Revenir au menu principal'
                 ]
             
+            case 'play_game':
+                self.title = 'Entrer le résultat d\'un match'
+                self.intro = 'Quel match souhaitez-vous entrer ?'
+                self.entries = atts['games']
+
+            case 'winner_select':
+                self.title = 'Selection du gagnant'
+                self.intro = 'Qui a gagné le match ?'
+                self.entries = atts['players']
+
             case other:
                 self.title = 'Menu title'
                 self.intro = 'Menu intro'

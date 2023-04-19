@@ -1,28 +1,34 @@
+import random
+from models.tournamentRound import TournamentRound
 """Classe tournoi : nom du tournoi, liste de joueurs inscrits"""
 
 class Tournament:
-
+    #TODO Changer pour enlever players comme liste d'objets, se contenter des id ?
     """Initialisation du tournoi
     atts est un dictionnaire comprenant :
             name,
             location,
-            startDate,
-            endDate,
-            numberOfRounds = 4,
-            currentRound,
+            start_date,
+            end_date,
+            number_of_round = 4,
+            current_round,
             rounds,
             players,
+            players_ids,
+            players_scores,
             notes,
             rounds
     """
     def __init__(self, atts):
         self.name = atts['name']
         self.location = atts['location']
-        self.startDate = atts['startDate']
-        self.endDate = atts['endDate']
-        self.numberOfRounds = atts['numberOfRounds']
-        self.currentRound = atts['currentRound']
-        self.rounds = atts['rounds']
+        self.start_date = atts['start_date']
+        self.end_date = atts['end_date']
+        self.number_of_round = atts['number_of_round']
+        if atts['current_round'] == '':
+            self.current_round = 0
+        else:
+            self.current_round = atts['current_round']
         if 'players' in atts:
             self.players = atts['players']
         else:
@@ -31,42 +37,209 @@ class Tournament:
             self.players_ids = atts['players_ids']
         else:
             self.players_ids = []
-        self.players_ids = atts['players_ids'] if atts['players_ids'] else []
+        if 'players_scores' in atts and len(atts['players_scores']) != 0:
+            self.players_scores = atts['players_scores']
+        else:
+            self.players_scores = {}
         self.notes = atts['notes']
         self.rounds = []
+        if len(atts['rounds']) > 0:
+            for tournament_round in atts['rounds']:
+                one_round = TournamentRound(tournament_round)
+                self.rounds.append(one_round)
 
     """Ajout de joueurs à la liste des inscrits"""
     def add_player(self, player):
         self.players.append(player)
+
+    def get_player_score(self, idne):
+        for id, score in self.players_scores.items():
+            if id == idne:
+                return score
+            #TODO else
+
+    #Génération du premier round
+    def generate_first_round(self):
+        atts = {
+            'tournament' : self.name,
+            'name' : 'Round 1',
+            'games' : []
+        }
+        #Créer stock joueurs
+        players_stock = []
+        for player in self.players:
+            players_stock.append(player)
+        
+        #Remettre les score à 0
+        for player_id in self.players_ids:
+            self.players_scores.update({player_id : 0})
+
+        while len(players_stock) > 0:
+            #Désigner aléatoirement un joueur
+            player_1 = random.choice(players_stock)
+            score_player_1 = self.get_player_score(player_1.idne)
+            
+            #Le retirer du stock
+            players_stock.remove(player_1)
+            
+            #désigner un autre
+            player_2 = random.choice(players_stock)
+            score_player_2 = self.get_player_score(player_2.idne)
+            players_stock.remove(player_2)
+            game = (
+                [player_1.idne, score_player_1],
+                [player_2.idne, score_player_2],
+                False
+            )
+            atts['games'].append(game)
+        tournament_round = TournamentRound(atts)
+        self.rounds.append(tournament_round)
+        self.current_round = 1
+
+    def has_been_played(self, game):
+        player_1 = game[0][0]
+        player_2 = game[1][0]
+
+        #créer la liste des joueurs joués par le joueur 1
+        played = []
+        for one_round in self.rounds:
+            for played_game in one_round.games:
+                if player_1 == played_game[0][0]:
+                    played.append(played_game[1][0])
+                if player_1 == played_game[1][0]:
+                    played.append(played_game[0][0])
+        
+        #Vérifier si le joueur 2 est dans la liste
+        if player_2 in played:
+            return True
+        return False
+
+    def generate_next_round(self):
+        atts = {
+            'tournament' : self.name,
+            'name' : 'Round {}'.format(self.current_round),
+            'games' : []
+        }
+        print('nouveau round !')
+        #classer les joueurs par score
+        new_ranking = sorted(self.players_scores.items(), key=lambda x: x[1], reverse=True)
+        self.players_scores = {}
+        for player in new_ranking:
+            self.players_scores[player[0]] = player[1]
+
+        #créer une copie de players par score
+        players_stock = []
+        for player in self.players_scores:
+            players_stock.append(player)
+        
+        #créer les nouveau matchs
+        while len(players_stock) > 2:
+            # player_1 = players_stock[0]
+            game = (
+                [players_stock[0], self.players_scores[players_stock[0]]],
+                [players_stock[1], self.players_scores[players_stock[1]]],
+                False
+            )
+
+            #vérifier si le match a déjà été joué
+            i = 0
+            while self.has_been_played(game):
+                game = (
+                    [players_stock[0], self.players_scores[players_stock[0]]],
+                    [players_stock[1 + i], self.players_scores[players_stock[1 + i]]],
+                    False
+                )
+                i += 1
+            players_stock.remove(game[1][0])
+            players_stock.remove(game[0][0])
+            atts['games'].append(game)
+        
+        game = (
+            [players_stock[0], self.players_scores[players_stock[0]]],
+            [players_stock[1], self.players_scores[players_stock[1]]],
+            False
+        )
+        atts['games'].append(game)
+        tournament_round = TournamentRound(atts)
+        self.rounds.append(tournament_round)
+
+    def enter_game_result(self, game_id, winner_id):
+        current_round = self.rounds[self.current_round - 1]
+        game = current_round.games[game_id]
+
+        #entrer un gagnant
+        if winner_id < 2:
+            player_id = game[winner_id][0]
+            # ajouter les points au gagnant
+            game[winner_id][1] += 1
+            self.players_scores[player_id] += 1
+            # marquer le match comme joué
+            game[2] = True
+
+        #cas d'égalité
+        else:
+            #TODO Vérifier si c'est utile
+            game[0][1] += 0.5
+            game[1][1] += 0.5
+            game[2] = True
+            self.players_scores[game[0][0]] += 0.5
+            self.players_scores[game[1][0]] += 0.5
+        
+        #vérifier si le round reste ouvert
+        round_is_closed = True
+        for game in current_round.games:
+            if not game[2]:
+                round_is_closed = False
+        
+        if round_is_closed:
+            #fermer le round et générer le suivant
+            print('Le round est terminé !')
+
+            #Vérifier si le tournoi est terminé
+            #TODO changer nombre rounds pour constante
+            if self.current_round <= 4:
+                self.current_round += 1
+                self.generate_next_round()
+            else:
+                #TODO mettre fin au tournoi
+                pass
+                
 
     def json_serialize(self):
         players = []
         if len(self.players) > 0:
             for player in self.players:
                 players.append(player.idne)
+            
+        #JSONiser les rounds
+        json_rounds = []
+        for one_round in self.rounds:
+            one_round.json_serialize()
+            json_rounds.append(one_round.atts)
 
         self.atts = {
             'name' : self.name,
             'location' : self.location,
-            'startDate' : self.startDate,
-            'endDate' : self.endDate,
-            'numberOfRounds' : self.numberOfRounds,
-            'currentRound' : self.currentRound,
-            'rounds' : self.rounds,
+            'start_date' : self.start_date,
+            'end_date' : self.end_date,
+            'number_of_round' : self.number_of_round,
+            'current_round' : self.current_round,
+            'rounds' : json_rounds,
             'players_ids' : players,
+            'players_scores' : self.players_scores,
             'notes' : self.notes,
-            'rounds' : self.rounds
         }
     
     def json_unserialize(self, json_datas):
         self.name = json_datas['name'],
         self.location = json_datas['location'],
-        self.startDate = json_datas['startDate'],
-        self.endDate = json_datas['endDate'],
-        self.numberOfRounds = json_datas['numberOfRounds'],
-        self.currentRound = json_datas['currentRound'],
+        self.start_date = json_datas['start_date'],
+        self.end_date = json_datas['end_date'],
+        self.number_of_round = json_datas['number_of_round'],
+        self.current_round = json_datas['current_round'],
         self.rounds = json_datas['rounds'],
         self.players_ids = json_datas['players_id'],
+        self.players_scores = json_datas['players_scores'],
         self.notes = json_datas['notes'],
         self.rounds = json_datas['rounds']
 

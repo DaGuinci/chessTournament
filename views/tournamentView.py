@@ -9,10 +9,10 @@ class TournamentView:
         print('\n')
         atts['name'] = input('Nom du tournoi\n')
         atts['location'] = input('Lieu\n')
-        atts['startDate'] = input('Date de début\n')
-        atts['endDate'] = input('Date de fin\n')
-        atts['numberOfRounds'] = input('Nombre de tours\n')
-        atts['currentRound'] = input(
+        atts['start_date'] = input('Date de début\n')
+        atts['end_date'] = input('Date de fin\n')
+        atts['number_of_round'] = input('Nombre de tours\n')
+        atts['current_round'] = input(
             'Numéro du tour en cours (0 pour la création d\'un nouveau tournoi)\n'
             )
         # self.atts['rounds'] = input('Nom du tournoi')
@@ -29,7 +29,22 @@ class TournamentView:
         for player in tournament.players:
             print('Joueur n˚' + str(i) + ' :')
             print('Nom et prénom :')
-            print(player.lastName + ' ' + player.firstName)
+            print(player.firstName + ' ' + player.lastName)
             print('Identifiant national :')
             print(player.idne, '\n')
             i += 1
+
+    def display_tournament_state(self, datas):
+        print('=============================')
+        print('État du tournoi')
+        print('=============================')
+        print('\nClassement :')
+        for player in datas['ranking']:
+            print(player[0], player[1])
+        
+        print('\nRounds :')
+        for one_round in datas['rounds']:
+            print(one_round['name'])
+            for game in one_round['games']:
+                status = 'Joué' if game['status'] else 'À jouer'
+                print('{} - {} - {}'.format(game['player_1'], game['player_2'], status))

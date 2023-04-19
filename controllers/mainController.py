@@ -13,7 +13,6 @@ class MainController:
     def __init__(self):
         self.justArrived = True
         self.tournament_controller = TournamentController()
-        self.player_controller = PlayerController()
 
     """Accueil de l'utilisateur, demander quoi faire"""
     def run(self):
@@ -32,12 +31,13 @@ class MainController:
                 self.run()
             case 2:
                 """Enregistrer un nouveau joueur"""
-                self.player_controller.create_player()
-                """TODO si le joueur existe, refuser la création"""
+                player_controller = PlayerController()
+                player_controller.create_player()
                 self.run()
             case 3:
                 """Afficher la liste des joueurs"""
-                self.player_controller.display_players()
+                player_controller = PlayerController()
+                player_controller.display_players()
                 self.run()
             case _:
                 print('Nous n\'avons pas compris votre choix. Veuillez réessayer.')
