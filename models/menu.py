@@ -18,25 +18,25 @@ class Menu:
                 self.title = 'Menu principal'
                 self.intro = 'Que souhaitez vous faire ?'
                 self.entries = [
-                    'Créer / Modifier / Jouer un tournoi',
-                    'Enregistrer un nouveau joueur',
-                    'Afficher la liste des joueurs'
+                    'Créer ou jouer un tournoi',
+                    'Créer ou voir les joueurs',
                 ]
 
-            case 'main_tournament':
-                self.title = 'Menu gestion tournois'
-                self.intro = 'Que souhaitez vous faire ?'
-                self.entries = [
-                    'Créer un tournoi',
-                    'Modifier ou jouer un tournoi',
-                    'Revenir au menu principal'
-                ]
+            # case 'main_tournament':
+            #     self.title = 'Menu gestion tournois'
+            #     self.intro = 'Que souhaitez vous faire ?'
+            #     self.entries = [
+            #         'Créer un tournoi',
+            #         'Modifier ou jouer un tournoi',
+            #         'Revenir au menu principal'
+            #     ]
 
-            case 'select_tournament':
+            case 'tournaments_menu':
                 self.title = 'Liste des tournois'
                 self.intro = 'Veuillez sélectionner un tournoi'
                 self.entries = atts['tournaments']
                 if self.entries[- 1] != 'Revenir au menu principal':
+                    self.entries.append('Créer un nouveau tournoi')
                     self.entries.append('Revenir au menu principal')
 
             case 'modify_tournament':

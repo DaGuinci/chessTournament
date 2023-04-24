@@ -165,8 +165,6 @@ class TournamentController:
         choice = menu.ask_user()
         match choice:
             case 1:
-                self.subscribe_player(tournament)
-            case 2:
                 """Jouer le tournoi"""
                 # TODO Afficher un résumé de l'état du tournoi:
                 # round en cours, classement joueurs
@@ -180,6 +178,8 @@ class TournamentController:
                     self.tournament_state(tournament)
                     # Proposer d'entrer les résultats de matchs
                     self.play_game_menu(tournament)
+            case 2:
+                self.subscribe_player(tournament)
             case 3:
                 """Afficher les détails"""
                 # Afficher les joueurs inscrits
@@ -188,45 +188,30 @@ class TournamentController:
                 self.tournament_state(tournament)
                 self.modify_tournament(tournament)
 
-    """Sélection d'un tournoi"""
-    def select_tournament(self):
+    # Menu tournois
+    def main_tournament(self):
         tournaments = []
         for t in self.tournaments:
             tournaments.append(t)
         atts = {
             'tournaments': tournaments
         }
-        menu = MenuController('select_tournament', atts)
+        menu = MenuController('tournaments_menu', atts)
         choice = menu.ask_user()
+        print('tournaments')
+        print(len(self.tournaments))
+        print(choice)
 
         if choice <= len(self.tournaments):
             self.modify_tournament(self.tournaments[choice - 1])
 
+        # Avant dernier choix : Créer un tournoi
+        elif choice == len(self.tournaments) + 1:
+            self.create_tournament()
+
         # Dernier choix : revenir au menu principal
-        elif choice - 1 == len(self.tournaments):
-            self.main_tournament()
+        elif choice == len(self.tournaments) + 2:
+            pass
 
         else:
             pass
-
-    """créer ou jouer un tournoi"""
-    def main_tournament(self):
-        menu = MenuController('main_tournament')
-        choice = menu.ask_user()
-
-        match choice:
-            case 1:
-                """Création d'un nouveau tournoi"""
-                self.create_tournament()
-
-            case 2:
-                """Selection d'un tournoi existant"""
-                if (len(self.tournaments) == 0):
-                    print('Aucun tournoi n\'a encore été créé')
-                    self.main_tournament()
-                else:
-                    self.select_tournament()
-
-            case 3:
-                """Retour au menu principal"""
-                pass
