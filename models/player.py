@@ -1,6 +1,8 @@
 """
 Classe joueur: nom, prénom, date de naissance, idne
 """
+
+
 class Player:
 
     def __init__(self, atts):
@@ -11,10 +13,10 @@ class Player:
 
     def json_serialize(self):
         self.atts = {
-            'firstName' : self.firstName,
-            'lastName' : self.lastName,
-            'birthDate' : self.birthDate,
-            'idne' : self.idne,
+            'firstName': self.firstName,
+            'lastName': self.lastName,
+            'birthDate': self.birthDate,
+            'idne': self.idne,
         }
 
     def __str__(self):
@@ -24,6 +26,6 @@ class Player:
         result += f"Identifiant national : {self.idne}\n"
 
         return result
-    
+
     def __repr__(self):
         return str(self)

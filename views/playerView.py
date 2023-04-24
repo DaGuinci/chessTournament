@@ -1,5 +1,5 @@
 class PlayerView:
-    
+
     """Obrenir les infos pour création d'un joueur"""
     def ask_user_for_new(self):
         atts = {}

@@ -2,17 +2,18 @@
 import os
 import json
 
+
 class DataController:
     if not os.path.exists('out/'):
         os.mkdir('out/')
 
-    def is_non_zero_file(self, fpath):  
+    def is_non_zero_file(self, fpath):
         return os.path.isfile(fpath) and os.path.getsize(fpath) > 0
 
     def load_tournaments(self):
         file_is_not_empty = self.is_non_zero_file("out/tournaments.json")
         if file_is_not_empty:
-            with open(f"out/tournaments.json", "r") as f:
+            with open(f'{"out/tournaments.json"}', "r") as f:
                 tournaments = json.load(f)
             return tournaments
         else:
@@ -26,15 +27,15 @@ class DataController:
                 tournament.json_serialize()
                 datas.append(tournament.atts)
 
-            with open(f"out/tournaments.json", "w") as f:
+            with open(f'{"out/tournaments.json"}', "w") as f:
                 """TODO vérifier si besoin d'un json.dump"""
                 json.dump(datas, f)
 
     def load_players(self):
         file_is_not_empty = self.is_non_zero_file("out/players.json")
         if file_is_not_empty:
-            with open(f"out/players.json", "r") as f:
-                players = json.load(f)  
+            with open(f'{"out/players.json"}', "r") as f:
+                players = json.load(f)
             return players
         else:
             return []
@@ -47,5 +48,5 @@ class DataController:
                 player.json_serialize()
                 datas.append(player.atts)
 
-            with open(f"out/players.json", "w") as f:
+            with open(f'{"out/players.json"}', "w") as f:
                 json.dump(datas, f)

@@ -17,6 +17,6 @@ class MenuView:
             print(i, entry)
         print('\n')
         return input('Quel est votre choix ?\n')
-    
+
     def user_error(self):
         print('Désolé, votre réponse n\'est pas valide.\nVeuillez réessayer')
