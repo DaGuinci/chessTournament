@@ -18,13 +18,18 @@ class MainController:
                 self.tournament_controller.main_tournament()
                 self.run()
             case 2:
-                # Créer ou voir les joueurs
-                # TODO menu joueurs
+                # menu joueurs
+                player_menu = MenuController('player_menu')
                 player_controller = PlayerController()
-                player_controller.create_player()
+                player_menu_choice = player_menu.ask_user()
+                if player_menu_choice == 1:
+                    player_controller.display_players()
+                elif player_menu_choice == 2:
+                    player_controller.create_player()
+                elif player_menu_choice == 3:
+                    pass
                 self.run()
             case 3:
-                """"""
                 player_controller = PlayerController()
                 player_controller.display_players()
                 self.run()
