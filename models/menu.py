@@ -20,6 +20,7 @@ class Menu:
                 self.entries = [
                     'Créer ou jouer un tournoi',
                     'Créer ou voir les joueurs',
+                    "Fermer l'application"
                 ]
 
             case 'tournaments_menu':

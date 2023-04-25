@@ -11,15 +11,10 @@ class MainController:
     """Accueil de l'utilisateur, demander quoi faire"""
     def run(self):
         choice = self.main_menu.ask_user()
-        # print('main menu :')
-        # print(main_menu)
-        print('choice ;')
-        print(choice)
         match choice:
             case 1:
                 # Créer ou jouer un tournoi
                 self.tournament_controller.main_tournament()
-                # self.run()
             case 2:
                 # menu joueurs
                 player_menu = MenuController('player_menu')
@@ -31,7 +26,8 @@ class MainController:
                     player_controller.create_player()
                 elif player_menu_choice == 3:
                     pass
-                # self.run()
+            case 4:
+                exit()
             case _:
                 print('Nous n\'avons pas compris votre choix.')
                 print('Veuillez réessayer.')
