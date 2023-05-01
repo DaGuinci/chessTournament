@@ -28,7 +28,6 @@ class DataController:
                 datas.append(tournament.atts)
 
             with open(f'{"out/tournaments.json"}', "w") as f:
-                """TODO vérifier si besoin d'un json.dump"""
                 json.dump(datas, f)
 
     def load_players(self):

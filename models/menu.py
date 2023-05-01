@@ -27,13 +27,17 @@ class Menu:
                 self.title = 'Liste des tournois'
                 self.intro = 'Veuillez sélectionner un tournoi'
                 self.entries = atts['tournaments']
-                if self.entries[- 1] != 'Revenir au menu principal':
+                if len(self.entries) > 0:
+                    if self.entries[- 1] != 'Revenir au menu principal':
+                        self.entries.append('Créer un nouveau tournoi')
+                        self.entries.append('Revenir au menu principal')
+                else:
                     self.entries.append('Créer un nouveau tournoi')
                     self.entries.append('Revenir au menu principal')
 
             case 'player_menu':
                 self.title = 'Menu joueur'
-                self.intro = 'Que souhaiyez-vous faire'
+                self.intro = 'Que souhaitez-vous faire'
                 self.entries = [
                     'Voir la liste des joueurs',
                     'Créer un nouveau joueur',

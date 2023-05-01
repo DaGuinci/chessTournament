@@ -26,7 +26,7 @@ class MainController:
                     player_controller.create_player()
                 elif player_menu_choice == 3:
                     pass
-            case 4:
+            case 3:
                 exit()
             case _:
                 print('Nous n\'avons pas compris votre choix.')

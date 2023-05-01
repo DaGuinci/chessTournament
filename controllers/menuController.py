@@ -21,6 +21,9 @@ class MenuController:
         self.response = self.menuView.prompt()
         if self.response.isdigit():
             self.response = int(self.response)
+        else:
+            self.menuView.user_error()
+            self.ask_user()
 
         while not self.validate_response():
             self.menuView.user_error()

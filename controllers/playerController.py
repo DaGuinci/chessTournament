@@ -27,7 +27,6 @@ class PlayerController:
         #  Si le joueur existe, refuser la création
         for player in self.players:
             if player.idne == atts['idne']:
-                # TODO générer un msg d'erreur
                 print('Cet identifant existe deja')
                 return False
 

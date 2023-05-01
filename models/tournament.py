@@ -63,33 +63,28 @@ class Tournament:
         atts = {
             'tournament': self.name,
             'name': 'Round 1',
-            'games': []
+            'games': [],
+            'start': '',
+            'end': ''
         }
         # Créer stock joueurs
         players_stock = []
         for player in self.players:
             players_stock.append(player)
 
-        # Remettre les score à 0
-        for player_id in self.players_ids:
-            self.players_scores.update({player_id: 0})
-
         while len(players_stock) > 0:
             # Désigner aléatoirement un joueur
             player_1 = random.choice(players_stock)
-            score_player_1 = self.get_player_score(player_1.idne)
 
             # Le retirer du stock
             players_stock.remove(player_1)
 
             # désigner un autre
             player_2 = random.choice(players_stock)
-            score_player_2 = self.get_player_score(player_2.idne)
             players_stock.remove(player_2)
             game = (
-                [player_1.idne, score_player_1],
-                [player_2.idne, score_player_2],
-                False
+                [str(player_1.idne), 0],
+                [str(player_2.idne), 0],
             )
             atts['games'].append(game)
         tournament_round = TournamentRound(atts)
@@ -118,7 +113,9 @@ class Tournament:
         atts = {
             'tournament': self.name,
             'name': 'Round {}'.format(self.current_round),
-            'games': []
+            'games': [],
+            'start': '',
+            'end': ''
         }
         print('nouveau round !')
         # classer les joueurs par score
@@ -138,11 +135,9 @@ class Tournament:
 
         # créer les nouveau matchs
         while len(players_stock) > 2:
-            #  player_1 = players_stock[0]
             game = (
-                [players_stock[0], self.players_scores[players_stock[0]]],
-                [players_stock[1], self.players_scores[players_stock[1]]],
-                False
+                [players_stock[0], 0],
+                [players_stock[1], 0],
             )
 
             # vérifier si le match a déjà été joué
@@ -160,10 +155,10 @@ class Tournament:
             players_stock.remove(game[0][0])
             atts['games'].append(game)
 
+        # mettre les scores du round à 0
         game = (
-            [players_stock[0], self.players_scores[players_stock[0]]],
-            [players_stock[1], self.players_scores[players_stock[1]]],
-            False
+            [players_stock[0], 0],
+            [players_stock[1], 0],
         )
         atts['games'].append(game)
         tournament_round = TournamentRound(atts)
@@ -179,32 +174,31 @@ class Tournament:
             #  ajouter les points au gagnant
             game[winner_id][1] += 1
             self.players_scores[player_id] += 1
-            #  marquer le match comme joué
-            game[2] = True
 
         # cas d'égalité
         else:
-            # TODO Vérifier si c'est utile
             game[0][1] += 0.5
             game[1][1] += 0.5
-            game[2] = True
+            #  ajouter les points aux joueurs
             self.players_scores[game[0][0]] += 0.5
             self.players_scores[game[1][0]] += 0.5
 
         # vérifier si le round reste ouvert
         round_is_closed = True
         for game in current_round.games:
-            if not game[2]:
+            if game[0][1]==0 and game[1][1]==0:
                 round_is_closed = False
 
         if round_is_closed:
             # fermer le round et générer le suivant
+            current_round.end_round()
             print('Le round est terminé !')
 
             # Vérifier si le tournoi est terminé
             # TODO changer nombre rounds pour constante
             if self.current_round <= 4:
                 self.current_round += 1
+                # TODO demander au user si generer round suivant
                 self.generate_next_round()
             else:
                 # TODO mettre fin au tournoi

@@ -4,7 +4,8 @@ from .dataController import DataController
 from controllers.playerController import PlayerController
 from models.tournament import Tournament
 from views.tournamentView import TournamentView
-
+import locale
+locale.setlocale(locale.LC_TIME,'')
 
 class TournamentController:
     def __init__(self):
@@ -61,6 +62,7 @@ class TournamentController:
                 """Inscrire le joueur"""
                 if player_exists and not player_yet_in_tournament:
                     tournament.add_player(player)
+                    tournament.players_scores.update({player_id: 0})
                     self.save()
                     self.view.display_tournament_players(tournament)
                     self.modify_tournament(tournament)
@@ -117,6 +119,11 @@ class TournamentController:
         for one_round in tournament.rounds:
             this_round = {}
             this_round['name'] = one_round.name
+            this_round['start'] = one_round.start.strftime('%A %d %b %Y, %H:%M%p')
+            if one_round.end == '':
+                this_round['end'] = 'Tour en cours'
+            else:
+                this_round['end'] = one_round.end.strftime('%A %d %b %Y, %H:%M%p')
             this_round['games'] = []
             rounds.append(this_round)
             for game in one_round.games:
@@ -126,7 +133,11 @@ class TournamentController:
                 name_2 = pl_controller.get_player_name_by_id(game[1][0])
                 this_game['player_1'] = name_1
                 this_game['player_2'] = name_2
-                this_game['status'] = game[2]
+                print(game)
+                if game[0][1]==0 and game[1][1]==0:
+                    this_game['status'] = False
+                else:
+                    this_game['status'] = True
                 this_round['games'].append(this_game)
         datas['rounds'] = rounds
         self.view.display_tournament_state(datas)
@@ -142,20 +153,36 @@ class TournamentController:
             name_1 = self.player_controller.get_player_name_by_id(game[0][0])
             name_2 = self.player_controller.get_player_name_by_id(game[1][0])
             game_repr = name_1 + ' - ' + name_2
+            # Indique si le match a été joué ou non
+            if game[0][1] == 0 and game[1][1] == 0:
+                game_repr += ' - Á jouer'
+            else:
+                game_repr += ' - Joué'
             winner_menu.append((name_1, name_2, 'Match nul'))
             games.append(game_repr)
         atts['games'] = games
+        # TODO proposer de commencer le nouveau round si nouveau round
+        round_is_new = True
         menu = MenuController('play_game', atts)
-        # TODO vérifier si le match a été joué
+        # vérifier si le match a été joué
         choice = menu.ask_user()
         game_id = choice - 1
-        #  winner_select = winner_menu[game_id]
-        atts['players'] = winner_menu[game_id]
-        winner_select_menu = MenuController('winner_select', atts)
-        winner_id = winner_select_menu.ask_user()
-        tournament.enter_game_result(game_id, winner_id - 1)
-        self.save()
-        self.modify_tournament(tournament)
+        if current_round.games[game_id][0][1] == 0 and current_round.games[game_id][1][1]==0:
+            played = False
+        else:
+            played = True
+        if played:
+            # TODO Génerer messages d'erreur
+            print('Ce match a déjà été joué.')
+            print('Veuillez en sélectionner un autre.')
+            self.play_game_menu(tournament)
+        else:
+            atts['players'] = winner_menu[game_id]
+            winner_select_menu = MenuController('winner_select', atts)
+            winner_id = winner_select_menu.ask_user()
+            tournament.enter_game_result(game_id, winner_id - 1)
+            self.save()
+            self.modify_tournament(tournament)
 
     def modify_tournament(self, tournament):
         atts = {
@@ -171,8 +198,13 @@ class TournamentController:
                 # Si pas de round, créer premier round
                 if tournament.current_round == 0:
                     # TODO vérifier nombre de joueurs
-                    tournament.generate_first_round()
-                    self.save()
+                    if len(tournament.players) >= 8:
+                        tournament.generate_first_round()
+                        self.save()
+                        self.play_game_menu(tournament)
+                    else:
+                        print('Le nombre de joueurs n\'est pas adapté. Inscrivez des joueurs')
+                        self.modify_tournament(tournament)
                 else:
                     # Afficher l'état du round
                     self.tournament_state(tournament)
@@ -181,7 +213,8 @@ class TournamentController:
             case 2:
                 self.subscribe_player(tournament)
             case 3:
-                """Afficher les détails"""
+                # Afficher les détails
+                self.view.dispay_tournament_details(tournament)
                 # Afficher les joueurs inscrits
                 self.view.display_tournament_players(tournament)
                 # Afficher l'état des rounds
@@ -198,9 +231,6 @@ class TournamentController:
         }
         menu = MenuController('tournaments_menu', atts)
         choice = menu.ask_user()
-        print('tournaments')
-        print(len(self.tournaments))
-        print(choice)
 
         if choice <= len(self.tournaments):
             self.modify_tournament(self.tournaments[choice - 1])
