@@ -56,7 +56,6 @@ class Tournament:
         for id, score in self.players_scores.items():
             if id == idne:
                 return score
-            # TODO else
 
     # Génération du premier round
     def generate_first_round(self):
@@ -67,9 +66,10 @@ class Tournament:
             'start': '',
             'end': ''
         }
-        # Créer stock joueurs
+        # Créer stock joueurs et le tableau des scores
         players_stock = []
         for player in self.players:
+            # self.players_scores[player.idne] = 0
             players_stock.append(player)
 
         while len(players_stock) > 0:
@@ -90,6 +90,7 @@ class Tournament:
         tournament_round = TournamentRound(atts)
         self.rounds.append(tournament_round)
         self.current_round = 1
+        # créer le tableau de scores
 
     def has_been_played(self, game):
         player_1 = game[0][0]
@@ -142,15 +143,22 @@ class Tournament:
 
             # vérifier si le match a déjà été joué
             i = 0
-            while self.has_been_played(game):
-                game = (
-                    [players_stock[0],
-                     self.players_scores[players_stock[0]]],
-                    [players_stock[1 + i],
-                     self.players_scores[players_stock[1 + i]]],
-                    False
-                )
-                i += 1
+            all_were_played = False
+            while self.has_been_played(game) and not all_were_played:
+                if i < len(players_stock) - 1:
+                    game = (
+                        [players_stock[0], 0],
+                        [players_stock[1 + i], 0]
+                    )
+                    i += 1
+                else:
+                    # cas où tous les matchs ont été joués:
+                    all_were_played = True
+                    game = (
+                        [players_stock[0], 0],
+                        [players_stock[1], 0],
+                    )
+
             players_stock.remove(game[1][0])
             players_stock.remove(game[0][0])
             atts['games'].append(game)
@@ -162,6 +170,8 @@ class Tournament:
         )
         atts['games'].append(game)
         tournament_round = TournamentRound(atts)
+        print('test')
+        print(tournament_round)
         self.rounds.append(tournament_round)
 
     def enter_game_result(self, game_id, winner_id):
@@ -184,25 +194,25 @@ class Tournament:
             self.players_scores[game[1][0]] += 0.5
 
         # vérifier si le round reste ouvert
-        round_is_closed = True
-        for game in current_round.games:
-            if game[0][1]==0 and game[1][1]==0:
-                round_is_closed = False
+        # round_is_closed = True
+        # for game in current_round.games:
+        #     if game[0][1]==0 and game[1][1]==0:
+        #         round_is_closed = False
 
-        if round_is_closed:
-            # fermer le round et générer le suivant
-            current_round.end_round()
-            print('Le round est terminé !')
+        # if round_is_closed:
+        #     # fermer le round et générer le suivant
+        #     current_round.end_round()
+        #     print('Le round est terminé !')
 
-            # Vérifier si le tournoi est terminé
-            # TODO changer nombre rounds pour constante
-            if self.current_round <= 4:
-                self.current_round += 1
-                # TODO demander au user si generer round suivant
-                self.generate_next_round()
-            else:
-                # TODO mettre fin au tournoi
-                pass
+        #     # Vérifier si le tournoi est terminé
+        #     # TODO changer nombre rounds pour constante
+        #     if self.current_round <= 4:
+        #         self.current_round += 1
+        #         # TODO demander au user si generer round suivant
+        #         self.generate_next_round()
+        #     else:
+        #         # TODO mettre fin au tournoi
+        #         pass
 
     def json_serialize(self):
         players = []

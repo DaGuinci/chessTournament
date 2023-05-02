@@ -22,11 +22,18 @@ class TournamentRound:
         if atts['end'] == '':
             self.end = ''
         else:
-            self.end = datetime.strptime(atts['start'], '%Y-%m-%dT%H:%M:%S.%f')
+            self.end = datetime.strptime(atts['end'], '%Y-%m-%dT%H:%M:%S.%f')
 
     def end_round(self):
         current_dateTime = datetime.now()
         self.end = current_dateTime
+
+    # vérifier si le round reste ouvert
+    def is_played(self):
+        for game in self.games:
+            if game[0][1] == 0 and game[1][1] == 0:
+                return False
+        return True
 
     def json_serialize(self):
         if self.end == '':

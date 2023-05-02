@@ -52,7 +52,7 @@ class Menu:
                     'Jouer le tournoi',
                     'Inscrire un joueur',
                     'Afficher les détails du tournoi',
-                    'Revenir au menu principal'
+                    'Revenir au menu tournois'
                 ]
 
             case 'subscribe_player':

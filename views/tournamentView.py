@@ -67,3 +67,24 @@ class TournamentView:
                 print('{} - {} - {}'.format(
                     game['player_1'], game['player_2'], status)
                 )
+
+    def ask_for_new_round(self):
+        response = input('Souhaitez-vous commencer le nouveau round ? (o/n)\n')
+        if response == 'o':
+            return True
+        elif response == 'n':
+            return False
+        else:
+            print('Désolé, votre réponse n\'est pas valide.\nVeuillez réessayer')
+            return (self.ask_for_new_round())
+
+    def ask_for_end_round(self):
+        print('\nTous les matchs du round sont joués.')
+        response = input('Souhaitez-vous clore le round ? (o/n)\n')
+        if response == 'o':
+            return True
+        elif response == 'n':
+            return False
+        else:
+            print('Désolé, votre réponse n\'est pas valide.\nVeuillez réessayer')
+            return (self.ask_for_end_round())

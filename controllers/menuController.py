@@ -23,9 +23,9 @@ class MenuController:
             self.response = int(self.response)
         else:
             self.menuView.user_error()
-            self.ask_user()
+            return self.ask_user()
 
         while not self.validate_response():
             self.menuView.user_error()
-            self.ask_user()
+            return self.ask_user()
         return self.response
