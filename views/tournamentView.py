@@ -24,7 +24,9 @@ class TournamentView:
         print('=============================')
         print('Joueurs inscrits')
         print('=============================\n')
-        for player in tournament.players:
+        for player in sorted(
+                tournament.players, key=lambda player: player.lastName
+                ):
             print('Joueur n˚' + str(i) + ' :')
             print('Nom et prénom :')
             print(player.firstName + ' ' + player.lastName)

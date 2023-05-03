@@ -18,5 +18,5 @@ class PlayerView:
         print('=============================')
         print('Liste des joueurs enregistrés')
         print('=============================')
-        for player in players:
+        for player in sorted(players, key=lambda player: player.lastName):
             print(player)
