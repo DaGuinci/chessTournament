@@ -118,13 +118,15 @@ class TournamentController:
         for one_round in tournament.rounds:
             this_round = {}
             this_round['name'] = one_round.name
-            start = one_round.start.strftime('%A %d %b %Y, %H:%M%p')
-            this_round['start'] = start
-            end = one_round.end.strftime('%A %d %b %Y, %H:%M%p')
+            this_round['start'] = one_round.start.strftime(
+                '%A %d %b %Y, %H:%M%p'
+                )
             if one_round.end == '':
                 this_round['end'] = 'Tour en cours'
             else:
-                this_round['end'] = end
+                this_round['end'] = one_round.end.strftime(
+                    '%A %d %b %Y, %H:%M%p'
+                    )
             this_round['games'] = []
             rounds.append(this_round)
             for game in one_round.games:
@@ -167,44 +169,27 @@ class TournamentController:
                 else:
                     # proposer de commencer le nouveau round si nouveau round
                     generate = self.view.ask_for_new_round()
-
             if generate:
                 tournament.current_round += 1
                 tournament.generate_next_round()
                 self.save()
                 self.modify_tournament(tournament)
-
         else:
             atts = {}
-            games = []
-            winner_menu = []
-            for game in current_round.games:
-                name_1 = self.player_controller.get_player_name_by_id(
-                    game[0][0]
-                    )
-                name_2 = self.player_controller.get_player_name_by_id(
-                    game[1][0]
-                    )
-                game_repr = name_1 + ' - ' + name_2
-                # Indique si le match a été joué ou non
-                if game[0][1] == 0 and game[1][1] == 0:
-                    game_repr += ' - Á jouer'
-                else:
-                    game_repr += ' - Joué'
-                winner_menu.append((name_1, name_2, 'Match nul'))
-                games.append(game_repr)
-            atts['games'] = games
+            games_datas = current_round.games_repr(self.player_controller)
+            atts['games'] = games_datas['games']
+            winner_menu = games_datas['winner_menu']
             menu = MenuController('play_game', atts)
             # vérifier si le match a été joué
             choice = menu.ask_user()
             game_id = choice - 1
-            if (current_round.games[game_id][0][1] == 0 and
+            # if (current_round.games[game_id][0][1] == 0 and
+            #         current_round.games[game_id][1][1] == 0):
+            #     played = False
+            # else:
+            #     played = True
+            if not (current_round.games[game_id][0][1] == 0 and
                     current_round.games[game_id][1][1] == 0):
-                played = False
-            else:
-                played = True
-            if played:
-                # TODO Génerer messages d'erreur
                 print('Ce match a déjà été joué.')
                 print('Veuillez en sélectionner un autre.')
                 self.play_game_menu(tournament)
