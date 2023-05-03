@@ -10,7 +10,7 @@ class Tournament:
             location,
             start_date,
             end_date,
-            number_of_round = 4,
+            number_of_rounds = 4,
             current_round,
             rounds,
             players,
@@ -24,7 +24,13 @@ class Tournament:
         self.location = atts['location']
         self.start_date = atts['start_date']
         self.end_date = atts['end_date']
-        self.number_of_round = atts['number_of_round']
+        # mettre le nombre de tours par défaut à 4
+        self.number_of_rounds = 4
+        if type(atts['number_of_rounds']) != int:
+            if atts['number_of_rounds'].isdigit():
+                atts['number_of_rounds'] = int(atts['number_of_rounds'])
+        if atts['number_of_rounds'] > 0:
+            self.number_of_rounds = atts['number_of_rounds']
         if atts['current_round'] == '':
             self.current_round = 0
         else:
@@ -170,8 +176,6 @@ class Tournament:
         )
         atts['games'].append(game)
         tournament_round = TournamentRound(atts)
-        print('test')
-        print(tournament_round)
         self.rounds.append(tournament_round)
 
     def enter_game_result(self, game_id, winner_id):
@@ -193,27 +197,6 @@ class Tournament:
             self.players_scores[game[0][0]] += 0.5
             self.players_scores[game[1][0]] += 0.5
 
-        # vérifier si le round reste ouvert
-        # round_is_closed = True
-        # for game in current_round.games:
-        #     if game[0][1]==0 and game[1][1]==0:
-        #         round_is_closed = False
-
-        # if round_is_closed:
-        #     # fermer le round et générer le suivant
-        #     current_round.end_round()
-        #     print('Le round est terminé !')
-
-        #     # Vérifier si le tournoi est terminé
-        #     # TODO changer nombre rounds pour constante
-        #     if self.current_round <= 4:
-        #         self.current_round += 1
-        #         # TODO demander au user si generer round suivant
-        #         self.generate_next_round()
-        #     else:
-        #         # TODO mettre fin au tournoi
-        #         pass
-
     def json_serialize(self):
         players = []
         if len(self.players) > 0:
@@ -231,7 +214,7 @@ class Tournament:
             'location': self.location,
             'start_date': self.start_date,
             'end_date': self.end_date,
-            'number_of_round': self.number_of_round,
+            'number_of_rounds': self.number_of_rounds,
             'current_round': self.current_round,
             'rounds': json_rounds,
             'players_ids': players,
@@ -244,7 +227,7 @@ class Tournament:
         self.location = json_datas['location'],
         self.start_date = json_datas['start_date'],
         self.end_date = json_datas['end_date'],
-        self.number_of_round = json_datas['number_of_round'],
+        self.number_of_rounds = json_datas['number_of_rounds'],
         self.current_round = json_datas['current_round'],
         self.rounds = json_datas['rounds'],
         self.players_ids = json_datas['players_id'],

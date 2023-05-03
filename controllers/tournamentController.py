@@ -66,7 +66,6 @@ class TournamentController:
                     self.save()
                     self.view.display_tournament_players(tournament)
                     self.modify_tournament(tournament)
-                # TODO Afficher un message de réussite
 
                 if not player_exists:
                     """TODO générer des messages d'erreur"""
@@ -87,7 +86,6 @@ class TournamentController:
                 self.player_controller.create_player(tournament)
                 self.save()
                 self.modify_tournament(tournament)
-                # TODO Afficher un message de réussite
 
             case 3:
                 """Revenir au menu principal"""
@@ -154,12 +152,18 @@ class TournamentController:
                 if end_round:
                     current_round.end_round()
                     self.save()
-                    generate = self.view.ask_for_new_round()
+                    if tournament.current_round == tournament.number_of_rounds:
+                        print('Le tournoi est terminé')
+                    else:
+                        generate = self.view.ask_for_new_round()
                 else:
                     self.modify_tournament(tournament)
             else:
-                # proposer de commencer le nouveau round si nouveau round
-                generate = self.view.ask_for_new_round()
+                if tournament.current_round == tournament.number_of_rounds:
+                    print('Le tournoi est terminé')
+                else:
+                    # proposer de commencer le nouveau round si nouveau round
+                    generate = self.view.ask_for_new_round()
 
             if generate:
                 tournament.current_round += 1
