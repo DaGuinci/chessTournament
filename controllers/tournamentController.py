@@ -183,11 +183,6 @@ class TournamentController:
             # vérifier si le match a été joué
             choice = menu.ask_user()
             game_id = choice - 1
-            # if (current_round.games[game_id][0][1] == 0 and
-            #         current_round.games[game_id][1][1] == 0):
-            #     played = False
-            # else:
-            #     played = True
             if not (current_round.games[game_id][0][1] == 0 and
                     current_round.games[game_id][1][1] == 0):
                 print('Ce match a déjà été joué.')
