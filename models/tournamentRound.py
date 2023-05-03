@@ -18,7 +18,9 @@ class TournamentRound:
             # current_dateTime = datetime.now()
             self.start = datetime.now()
         else:
-            self.start = datetime.strptime(atts['start'], '%Y-%m-%dT%H:%M:%S.%f')
+            self.start = datetime.strptime(
+                atts['start'], '%Y-%m-%dT%H:%M:%S.%f'
+                )
         if atts['end'] == '':
             self.end = ''
         else:

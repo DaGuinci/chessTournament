@@ -5,7 +5,8 @@ from controllers.playerController import PlayerController
 from models.tournament import Tournament
 from views.tournamentView import TournamentView
 import locale
-locale.setlocale(locale.LC_TIME,'')
+locale.setlocale(locale.LC_TIME, '')
+
 
 class TournamentController:
     def __init__(self):
@@ -117,11 +118,13 @@ class TournamentController:
         for one_round in tournament.rounds:
             this_round = {}
             this_round['name'] = one_round.name
-            this_round['start'] = one_round.start.strftime('%A %d %b %Y, %H:%M%p')
+            start = one_round.start.strftime('%A %d %b %Y, %H:%M%p')
+            this_round['start'] = start
+            end = one_round.end.strftime('%A %d %b %Y, %H:%M%p')
             if one_round.end == '':
                 this_round['end'] = 'Tour en cours'
             else:
-                this_round['end'] = one_round.end.strftime('%A %d %b %Y, %H:%M%p')
+                this_round['end'] = end
             this_round['games'] = []
             rounds.append(this_round)
             for game in one_round.games:
@@ -131,7 +134,7 @@ class TournamentController:
                 name_2 = pl_controller.get_player_name_by_id(game[1][0])
                 this_game['player_1'] = name_1
                 this_game['player_2'] = name_2
-                if game[0][1]==0 and game[1][1]==0:
+                if game[0][1] == 0 and game[1][1] == 0:
                     this_game['status'] = False
                 else:
                     this_game['status'] = True
@@ -176,8 +179,12 @@ class TournamentController:
             games = []
             winner_menu = []
             for game in current_round.games:
-                name_1 = self.player_controller.get_player_name_by_id(game[0][0])
-                name_2 = self.player_controller.get_player_name_by_id(game[1][0])
+                name_1 = self.player_controller.get_player_name_by_id(
+                    game[0][0]
+                    )
+                name_2 = self.player_controller.get_player_name_by_id(
+                    game[1][0]
+                    )
                 game_repr = name_1 + ' - ' + name_2
                 # Indique si le match a été joué ou non
                 if game[0][1] == 0 and game[1][1] == 0:
@@ -191,7 +198,8 @@ class TournamentController:
             # vérifier si le match a été joué
             choice = menu.ask_user()
             game_id = choice - 1
-            if current_round.games[game_id][0][1] == 0 and current_round.games[game_id][1][1]==0:
+            if (current_round.games[game_id][0][1] == 0 and
+                    current_round.games[game_id][1][1] == 0):
                 played = False
             else:
                 played = True
@@ -232,7 +240,8 @@ class TournamentController:
                         else:
                             self.modify_tournament(tournament)
                     else:
-                        print('Le nombre de joueurs n\'est pas adapté. Inscrivez des joueurs')
+                        print('Le nombre de joueurs n\'est pas adapté.')
+                        print('Inscrivez des joueurs, svp.')
                         self.modify_tournament(tournament)
                 else:
                     # Afficher l'état du round
@@ -273,4 +282,3 @@ class TournamentController:
         # Dernier choix : revenir au menu principal
         elif choice == len(self.tournaments) + 2:
             pass
-

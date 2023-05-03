@@ -3,3 +3,4 @@ launch.json
 classDiagram.uxf
 **/__pycache__
 out/
+.flake8

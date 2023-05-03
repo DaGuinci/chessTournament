@@ -77,7 +77,8 @@ class TournamentView:
         elif response == 'n':
             return False
         else:
-            print('Désolé, votre réponse n\'est pas valide.\nVeuillez réessayer')
+            print('Désolé, votre réponse n\'est pas valide.')
+            print('Veuillez réessayer.')
             return (self.ask_for_new_round())
 
     def ask_for_end_round(self):
@@ -88,5 +89,6 @@ class TournamentView:
         elif response == 'n':
             return False
         else:
-            print('Désolé, votre réponse n\'est pas valide.\nVeuillez réessayer')
+            print('Désolé, votre réponse n\'est pas valide.')
+            print('Veuillez réessayer.')
             return (self.ask_for_end_round())
