@@ -36,6 +36,7 @@ class PlayerController:
         self.data_controller.save_players(self.players)
         if tournament:
             tournament.add_player(player)
+            tournament.players_scores.update({player.idne: 0})
         print('\nJoueur créé.')
 
     def get_player_by_id(self, id):
