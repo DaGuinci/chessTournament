@@ -1,5 +1,6 @@
 # Application pour gérer des tournois d'échec hors ligne
 Sur le modèle de la ronde suisse
+
 En ligne de commande, écrite en python.
 
 ## Environment
@@ -20,7 +21,7 @@ Activer l'environnement
 source env/bin/activate
 ```
 
-## Dependances
+Permettre l'utilisation de flake8
 
 ```bash
 pip install -r requirements.txt
@@ -30,4 +31,12 @@ pip install -r requirements.txt
 
 ```bash
 python main.py
+```
+
+## Flake8
+
+Générer un rapport flake8
+
+```bash
+flake8
 ```
