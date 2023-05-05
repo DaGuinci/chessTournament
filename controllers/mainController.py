@@ -21,9 +21,9 @@ class MainController:
                 player_controller = PlayerController()
                 player_menu_choice = player_menu.ask_user()
                 if player_menu_choice == 1:
-                    player_controller.display_players()
-                elif player_menu_choice == 2:
                     player_controller.create_player()
+                elif player_menu_choice == 2:
+                    player_controller.display_players()
                 elif player_menu_choice == 3:
                     pass
             case 3:

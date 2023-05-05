@@ -39,8 +39,8 @@ class Menu:
                 self.title = 'Menu joueur'
                 self.intro = 'Que souhaitez-vous faire'
                 self.entries = [
-                    'Voir la liste des joueurs',
                     'Créer un nouveau joueur',
+                    'Voir la liste des joueurs',
                     'Revenir au menu principal'
                 ]
 
