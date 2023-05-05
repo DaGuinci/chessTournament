@@ -47,9 +47,8 @@ class TournamentController:
                 player_id = self.view.ask_user_for_player_id()
 
                 # Vérifier si le joueur existe
-                players = self.player_controller.players
                 player_exists = False
-                for player_iter in players:
+                for player_iter in self.player_controller.players:
                     if player_id == player_iter.idne:
                         player_exists = True
                         player = player_iter

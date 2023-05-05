@@ -11,7 +11,7 @@ class TournamentView:
         atts['location'] = input('Lieu\n')
         atts['start_date'] = input('Date de début\n')
         atts['end_date'] = input('Date de fin\n')
-        atts['number_of_rounds'] = input('Nombre de tours\n')
+        atts['number_of_rounds'] = input('Nombre de tours (par défaut : 4) tours \n')
         atts['notes'] = input('Notes du/de la directeur/rice du tournoi\n')
         return atts
 

@@ -29,8 +29,14 @@ class Tournament:
         if type(atts['number_of_rounds']) != int:
             if atts['number_of_rounds'].isdigit():
                 atts['number_of_rounds'] = int(atts['number_of_rounds'])
+            else:
+                # Fixer le nombre de tours par defaut à 4
+                atts['number_of_rounds'] = 4
         if atts['number_of_rounds'] > 0:
             self.number_of_rounds = atts['number_of_rounds']
+        else:
+            # Fixer le nombre de tours par defaut à 4
+            atts['number_of_rounds'] == 4
         if atts['current_round'] == '':
             self.current_round = 0
         else:
