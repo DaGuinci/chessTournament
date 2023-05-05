@@ -32,18 +32,18 @@ class TournamentController:
     def save(self):
         self.data_controller.save_tournaments(self.tournaments)
 
+    # Mettre à jour la liste des joueurs
+    def update_players(self):
+        self.player_controller = PlayerController()
+
     # Inscrire des joueurs
     def subscribe_player(self, tournament):
-        # Menu joueur existant ou créer un joueur
-        atts = {
-            'tournament': tournament
-        }
+        self.update_players()
+        atts = {'tournament': tournament}
         menu = MenuController('subscribe_player', atts)
         choice = menu.ask_user()
         match choice:
-            case 1:
-                """inscrire un joueur existant :
-                Demander l'id du joueur"""
+            case 1:  # Inscrire un joueur existant
                 player_id = self.view.ask_user_for_player_id()
 
                 # Vérifier si le joueur existe
@@ -79,14 +79,12 @@ class TournamentController:
                     self.view.display_tournament_players(tournament)
                     self.subscribe_player(tournament)
 
-            case 2:
-                """Créer un nouveau joueur"""
+            case 2:  # Créer un nouveau joueur
                 self.player_controller.create_player(tournament)
                 self.save()
                 self.modify_tournament(tournament)
 
-            case 3:
-                # Revenir au menu principal
+            case 3:  # Revenir au menu principal
                 pass
 
     # Création d'un tournoi

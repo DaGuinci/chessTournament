@@ -11,6 +11,10 @@ class PlayerView:
         atts['lastName'] = input('Nom de famille\n')
         atts['birthDate'] = input('Date de naissance\n')
         atts['idne'] = input('Identifiant national\n')
+        while atts['idne'] == '':
+            print('Le champ identifiant ne peut être vide.')
+            print('Reessayez, svp')
+            atts['idne'] = input('Identifiant national\n')
         return atts
 
     # Affichage de la liste de joueurs
