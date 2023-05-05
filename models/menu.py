@@ -1,7 +1,7 @@
 class Menu:
 
-    """Initialize a menu
-    atts is a dictionary, including :
+    """Initialise un menu
+    atts est un dictionnaire, incluant :
     title : str
     intro : str
     entries : list

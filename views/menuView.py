@@ -1,6 +1,6 @@
 class MenuView:
 
-    """Initialize : menu is a liste"""
+    """Initialisation menu est une liste"""
     def __init__(self, menu) -> None:
         self.menu = menu
 

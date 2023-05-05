@@ -12,14 +12,14 @@ class PlayerController:
         self.data_controller = DataController()
         self.init_players()
 
-    """Chargement de la liste des joueurs existants"""
+    # Chargement de la liste des joueurs existants
     def init_players(self):
         players = self.data_controller.load_players()
         for player in players:
             p = Player(player)
             self.players.append(p)
 
-    """Création d'un nouveau joueur"""
+    # Création d'un nouveau joueur
     def create_player(self, tournament=False):
         """Obtenir les infos pour création d'un joueur"""
         atts = self.view.ask_user_for_new()
@@ -30,7 +30,7 @@ class PlayerController:
                 print('Cet identifant existe deja')
                 return False
 
-        """Création du joueur"""
+        # Création du joueur
         player = Player(atts)
         self.players.append(player)
         self.data_controller.save_players(self.players)
@@ -48,6 +48,6 @@ class PlayerController:
             if player.idne == id:
                 return f'{player.firstName} {player.lastName}'
 
-    """Affichage de la liste de joueurs"""
+    # Affichage de la liste de joueurs
     def display_players(self):
         self.view.display_players(self.players)

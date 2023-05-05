@@ -1,6 +1,6 @@
 class PlayerView:
 
-    """Obrenir les infos pour création d'un joueur"""
+    # Obtenir les infos pour création d'un joueur
     def ask_user_for_new(self):
         atts = {}
         print('=============================')
@@ -13,7 +13,7 @@ class PlayerView:
         atts['idne'] = input('Identifiant national\n')
         return atts
 
-    """Affichage de la liste de joueurs"""
+    # Affichage de la liste de joueurs
     def display_players(self, players):
         print('=============================')
         print('Liste des joueurs enregistrés')

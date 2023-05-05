@@ -1,6 +1,6 @@
 class TournamentView:
 
-    """Obtenir les infos pour création d'un tournoi"""
+    # Obtenir les infos pour création d'un tournoi
     def ask_user_for_new(self):
         atts = {}
         print('=============================')

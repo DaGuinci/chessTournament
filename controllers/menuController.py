@@ -9,14 +9,15 @@ class MenuController:
         self.menuView = MenuView(self.menu)
         self.response = ''
 
-    """Verify if the user response is valide :
-    Response has to be a number in the menu list"""
+    """ Verifier si la réponse est valide :
+    La réponse doit être un nombre dans la liste proposée """
     def validate_response(self):
         if 0 < self.response <= len(self.menu.entries):
             return True
         else:
             return False
-
+    """ Recevoir et traiter la réponse de l'utilisateur
+    Prompt propose le menu contenu dans self.menu """
     def ask_user(self):
         self.response = self.menuView.prompt()
         if self.response.isdigit():

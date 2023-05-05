@@ -16,7 +16,7 @@ class TournamentController:
         self.player_controller = PlayerController()
         self.init_tournaments()
 
-    """chargement initial des tournois à l'ouverture du programme"""
+    # chargement initial des tournois à l'ouverture du programme
     def init_tournaments(self):
         tournaments = self.data_controller.load_tournaments()
         players = self.player_controller.players
@@ -28,13 +28,13 @@ class TournamentController:
                         t.add_player(player)
             self.tournaments.append(t)
 
-    """Sauvegarde de l'état"""
+    # Sauvegarde de l'état
     def save(self):
         self.data_controller.save_tournaments(self.tournaments)
 
-    """Inscrire des joueurs"""
+    # Inscrire des joueurs
     def subscribe_player(self, tournament):
-        """Menu joueur existant ou créer un joueur"""
+        # Menu joueur existant ou créer un joueur
         atts = {
             'tournament': tournament
         }
@@ -46,7 +46,7 @@ class TournamentController:
                 Demander l'id du joueur"""
                 player_id = self.view.ask_user_for_player_id()
 
-                """Vérifier si le joueur existe"""
+                # Vérifier si le joueur existe
                 players = self.player_controller.players
                 player_exists = False
                 for player_iter in players:
@@ -54,13 +54,13 @@ class TournamentController:
                         player_exists = True
                         player = player_iter
 
-                """Vérfifier que le joueur n'est pas déjà inscrit"""
+                # Vérfifier que le joueur n'est pas déjà inscrit
                 player_yet_in_tournament = False
                 for player_in_tournament in tournament.players:
                     if player_id == player_in_tournament.idne:
                         player_yet_in_tournament = True
 
-                """Inscrire le joueur"""
+                # Inscrire le joueur
                 if player_exists and not player_yet_in_tournament:
                     tournament.add_player(player)
                     tournament.players_scores.update({player_id: 0})
@@ -69,14 +69,12 @@ class TournamentController:
                     self.modify_tournament(tournament)
 
                 if not player_exists:
-                    """TODO générer des messages d'erreur"""
                     print(
                         'Désolé, ce joueur n\'existe pas, veuillez réessayer'
                     )
                     self.subscribe_player(tournament)
 
                 if player_yet_in_tournament:
-                    """TODO générer des messages d'erreur"""
                     print('Ce joueur est déjà inscrit. Veuillez réessayer')
                     print('Rappel des joueurs inscrit:\n')
                     self.view.display_tournament_players(tournament)
@@ -89,11 +87,12 @@ class TournamentController:
                 self.modify_tournament(tournament)
 
             case 3:
-                """Revenir au menu principal"""
+                # Revenir au menu principal
+                pass
 
-    """Création d'un tournoi"""
+    # Création d'un tournoi
     def create_tournament(self):
-        """Obtenir les infos pour création d'un tournoi"""
+        # Obtenir les infos pour création d'un tournoi
         atts = self.view.ask_user_for_new()
         #  Vérifier le numéro du tour en cours
         atts['rounds'] = []

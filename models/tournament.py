@@ -54,7 +54,7 @@ class Tournament:
                 one_round = TournamentRound(tournament_round)
                 self.rounds.append(one_round)
 
-    """Ajout de joueurs à la liste des inscrits"""
+    # Ajout de joueurs à la liste des inscrits
     def add_player(self, player):
         self.players.append(player)
 
