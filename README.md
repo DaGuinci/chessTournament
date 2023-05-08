@@ -38,5 +38,5 @@ python main.py
 Générer un rapport flake8
 
 ```bash
-flake8
+flake8 --format=html --htmldir=flake-report
 ```
